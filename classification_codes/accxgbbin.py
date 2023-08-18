@@ -57,7 +57,7 @@ def prediction_hits(X_train, y_train, X_test, y_test):
         'lambda': [0.1, 1.0, 10.0],
         'objective': [params_binary, params_regression]
     }
-
+    results = []
     for max_depth in param_grid['max_depth']:
         for learning_rate in param_grid['learning_rate']:
             for subsample in param_grid['subsample']:
@@ -65,9 +65,9 @@ def prediction_hits(X_train, y_train, X_test, y_test):
                     for n_estimators in param_grid['n_estimators']:
                         for lamb in param_grid['lambda']:
                             for obj in param_grid['objective']:
-                                results = train_and_evaluate(X_train, y_train, X_test, y_test, max_depth, learning_rate,
+                                results.append(train_and_evaluate(X_train, y_train, X_test, y_test, max_depth, learning_rate,
                                                              subsample, colsample_bytree,
-                                                             n_estimators, lamb, obj)
+                                                             n_estimators, lamb, obj))
 
     # find the best score and best hyperparameters
     best_score, best_params = max(results, key=lambda x: x[0])
