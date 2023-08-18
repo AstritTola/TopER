@@ -85,7 +85,7 @@ import pandas as pd
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import accuracy_score
 
-with open('REDDIT-MULTI-5K.csv', 'r') as f:
+with open('BZR.csv', 'r') as f:
     data = f.readlines()[1:]
 
 d_data = np.array([list(map(float, edge.strip().split('\t')[2:])) for edge in data])
@@ -102,7 +102,7 @@ for W in range(r):
 
 X = d_data[:, :c - 1]
 
-name = 'REDDIT-MULTI-5K'
+name = 'BZR'
 file = open(name + 'resultsxgbext.csv', 'w')
 file.write('dataset' + "\t" + 'fun id' + "\t" + 'accuracy' + "\t" + 'std' + "\n")
 file.flush()
