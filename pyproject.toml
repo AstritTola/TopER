@@ -44,4 +44,4 @@ Repository = "https://github.com/AstritTola/TopER"
 Documentation = "https://github.com/AstritTola/TopER#readme"
 
 [tool.setuptools.packages.find]
-where = ["toper"]
+where = ["."]
