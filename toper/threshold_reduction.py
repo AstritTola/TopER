@@ -15,3 +15,6 @@ def reduce_list(input_list, num_segm):
         reduced_list.append(input_list[i * M + r - 1])
     
     return reduced_list
+
+def reduce_thresholds(thresholds, max_len=501):
+    return thresholds if len(thresholds) <= max_len else reduce_list(thresholds)
