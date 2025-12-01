@@ -46,6 +46,7 @@ def main(van_graph_list, funct_list, num_segm=501):
 
     results = {}
     is_windows = platform.system().lower() == "windows"
+    num_graph = len(van_graph_list)
 
     # Helper to measure runtime
     def time_it(label, func):
@@ -61,7 +62,7 @@ def main(van_graph_list, funct_list, num_segm=501):
             graph_list, thresholds = get_thresholds_deg_cen(van_graph_list)
             thresholds = reduce_thresholds(thresholds, num_segm)
             F_sub, F_super = compute_and_save_features(
-                name, "deg_cen", num_graph, graph_list, thresholds,
+                "deg_cen", num_graph, graph_list, thresholds,
                 sub_node_feat, super_node_feat, "degree_centrality"
             )
             return {"deg_cen_sub": F_sub, "deg_cen_super": F_super}
@@ -75,7 +76,7 @@ def main(van_graph_list, funct_list, num_segm=501):
             graph_list, thresholds = get_thresholds_popularity(van_graph_list)
             thresholds = reduce_thresholds(thresholds, num_segm)
             F_sub, F_super = compute_and_save_features(
-                name, "popularity", num_graph, graph_list, thresholds,
+                "popularity", num_graph, graph_list, thresholds,
                 sub_node_feat, super_node_feat, "popularity"
             )
             return {"popularity_sub": F_sub, "popularity_super": F_super}
@@ -89,7 +90,7 @@ def main(van_graph_list, funct_list, num_segm=501):
             graph_list, thresholds = get_thresholds_closeness(van_graph_list)
             thresholds = reduce_thresholds(thresholds, num_segm)
             F_sub, F_super = compute_and_save_features(
-                name, "closeness", num_graph, graph_list, thresholds,
+                 "closeness", num_graph, graph_list, thresholds,
                 sub_node_feat, super_node_feat, "closeness"
             )
             return {"closeness_sub": F_sub, "closeness_super": F_super}
@@ -98,12 +99,12 @@ def main(van_graph_list, funct_list, num_segm=501):
         gc.collect()
 
     # ---- Forman–Ricci ----
-    if "forricci" in funct_list:
+    if "fricci" in funct_list:
         def run_forricci():
             graph_list, thresholds = get_thresholds_forricci(van_graph_list)
             thresholds = reduce_thresholds(thresholds, num_segm)
             F_sub, F_super = compute_and_save_features(
-                name, "forricci", num_graph, graph_list, thresholds,
+                "forricci", num_graph, graph_list, thresholds,
                 sub_edge_feat, super_edge_feat, "formanCurvature"
             )
             return {"forricci_sub": F_sub, "forricci_super": F_super}
@@ -112,7 +113,7 @@ def main(van_graph_list, funct_list, num_segm=501):
         gc.collect()
 
     # ---- Ollivier–Ricci ----
-    if "olricci" in funct_list:
+    if "oricci" in funct_list:
         if is_windows:
             print("[Skip] Ollivier–Ricci is not supported on Windows.")
         else:
@@ -120,7 +121,7 @@ def main(van_graph_list, funct_list, num_segm=501):
                 graph_list, thresholds = get_thresholds_olricci(van_graph_list)
                 thresholds = reduce_thresholds(thresholds, num_segm)
                 F_sub, F_super = compute_and_save_features(
-                    name, "olricci", num_graph, graph_list, thresholds,
+                     "olricci", num_graph, graph_list, thresholds,
                     sub_edge_feat, super_edge_feat, "ricciCurvature"
                 )
                 return {"olricci_sub": F_sub, "olricci_super": F_super}
@@ -134,7 +135,7 @@ def main(van_graph_list, funct_list, num_segm=501):
             graph_list, thresholds = get_thresholds_degree(van_graph_list)
             thresholds = reduce_thresholds(thresholds, num_segm)
             F_sub, F_super = compute_and_save_features(
-                name, "degree", num_graph, graph_list, thresholds,
+                 "degree", num_graph, graph_list, thresholds,
                 sub_node_feat, super_node_feat, "degree"
             )
             return {"degree_sub": F_sub, "degree_super": F_super}
@@ -148,7 +149,7 @@ def main(van_graph_list, funct_list, num_segm=501):
             graph_list, thresholds = get_thresholds_weight(van_graph_list)
             thresholds = reduce_thresholds(thresholds, num_segm)
             F_sub, F_super = compute_and_save_features(
-                name, "weight", num_graph, graph_list, thresholds,
+                 "weight", num_graph, graph_list, thresholds,
                 sub_node_feat, super_node_feat, "weight"
             )
             return {"weight_sub": F_sub, "weight_super": F_super}
