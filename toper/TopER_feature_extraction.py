@@ -161,7 +161,7 @@ def super_edge_feat(num_graph, G_list, threshold_array, metric_key):
 
     return TopER
 
-def compute_and_save_features(name, prefix, num_graph, graph_list, thresholds, func_sub, func_super, mkey):
+def compute_and_save_features(prefix, num_graph, graph_list, thresholds, func_sub, func_super, mkey):
     F_sub = func_sub(num_graph, graph_list, thresholds, mkey)
     F_super = func_super(num_graph, graph_list, thresholds, mkey)
     
