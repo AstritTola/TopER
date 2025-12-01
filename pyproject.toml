@@ -26,7 +26,6 @@ Homepage = "https://github.com/AstritTola/TopER"
 Repository = "https://github.com/AstritTola/TopER"
 Documentation = "https://github.com/AstritTola/TopER#readme"
 
-[project.dependencies]
 dependencies = [
     "numpy>=1.21",
     "pandas>=1.3",
