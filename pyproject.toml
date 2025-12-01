@@ -27,11 +27,13 @@ Repository = "https://github.com/AstritTola/TopER"
 Documentation = "https://github.com/AstritTola/TopER#readme"
 
 [project.dependencies]
-numpy = ">=1.21"
-pandas = ">=1.3"
-networkx = ">=3.0"
-joblib = ">=1.2"
-GraphRicciCurvature = ">=0.5"
+dependencies = [
+    "numpy>=1.21",
+    "pandas>=1.3",
+    "networkx>=3.0",
+    "joblib>=1.2",
+    "GraphRicciCurvature>=0.5"
+]
 
 [tool.setuptools.packages.find]
 where = ["toper"]
