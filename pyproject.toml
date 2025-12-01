@@ -14,14 +14,6 @@ authors = [
     { name = "Astrit Tola", email = "astrittola@gmail.com" }
 ]
 
-dependencies = [
-    "numpy>=1.21",
-    "pandas>=1.3",
-    "networkx>=3.0",
-    "joblib>=1.2",
-    "GraphRicciCurvature>=0.5"
-]
-
 keywords = [
     "graph",
     "feature-extraction",
@@ -38,10 +30,18 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence"
 ]
 
+dependencies = [
+    "numpy>=1.21",
+    "pandas>=1.3",
+    "networkx>=3.0",
+    "joblib>=1.2",
+    "GraphRicciCurvature>=0.5"
+]
+
 [project.urls]
 Homepage = "https://github.com/AstritTola/TopER"
 Repository = "https://github.com/AstritTola/TopER"
 Documentation = "https://github.com/AstritTola/TopER#readme"
 
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["toper"]
