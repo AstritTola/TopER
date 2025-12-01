@@ -8,7 +8,12 @@ version = "1.0"
 description = "A Python package for graph processing and feature extraction"
 readme = "README.md"
 requires-python = ">=3.7"
-license = { text = "MIT" }
+
+#license-files = [ text = "MIT" ]
+
+license = "MIT"              # SPDX identifier
+license-files = ["LICENSE"]  # must be an array of strings
+
 
 authors = [
     { name = "Astrit Tola", email = "astrittola@gmail.com" }
@@ -24,7 +29,7 @@ keywords = [
 
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
+    #"License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Intended Audience :: Developers",
     "Topic :: Scientific/Engineering :: Artificial Intelligence"
@@ -43,5 +48,12 @@ Homepage = "https://github.com/AstritTola/TopER"
 Repository = "https://github.com/AstritTola/TopER"
 Documentation = "https://github.com/AstritTola/TopER#readme"
 
-[tool.setuptools.packages.find]
-where = ["."]
+[tool.setuptools]
+#license-files = ["LICENSE"]
+packages = ["toper"]
+
+#[tool.setuptools.packages.find]
+#where = ["."]
+
+[tool.setuptools.package-dir]
+toper = "toper"
