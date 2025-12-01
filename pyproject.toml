@@ -9,22 +9,26 @@ description = "A Python package for graph processing and feature extraction"
 readme = "README.md"
 requires-python = ">=3.7"
 license = { text = "MIT" }
+
 authors = [
-    { name="Astrit Tola", email="astrittola@gmail.com" }
+    { name = "Astrit Tola", email = "astrittola@gmail.com" }
 ]
-keywords = ["graph", "feature-extraction", "network-analysis", "TopER", "GraphRepresentationLearning"]
+
+keywords = [
+    "graph",
+    "feature-extraction",
+    "network-analysis",
+    "TopER",
+    "GraphRepresentationLearning"
+]
+
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Intended Audience :: Developers",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
 ]
-
-[project.urls]
-Homepage = "https://github.com/AstritTola/TopER"
-Repository = "https://github.com/AstritTola/TopER"
-Documentation = "https://github.com/AstritTola/TopER#readme"
 
 dependencies = [
     "numpy>=1.21",
@@ -34,5 +38,10 @@ dependencies = [
     "GraphRicciCurvature>=0.5"
 ]
 
+[project.urls]
+Homepage = "https://github.com/AstritTola/TopER"
+Repository = "https://github.com/AstritTola/TopER"
+Documentation = "https://github.com/AstritTola/TopER#readme"
+
 [tool.setuptools.packages.find]
-where = ["toper"]
+where = ["."]
