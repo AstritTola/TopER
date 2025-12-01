@@ -1,6 +1,9 @@
 import gc
 import time
 import platform
+from .TopER_feature_extraction import *
+from .threshold_extraction import *
+from .threshold_reduction import *
 
 def main(van_graph_list, funct_list, num_segm=501):
     # van_graph_list:
