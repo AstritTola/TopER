@@ -1,20 +1,149 @@
-def main(van_graph_list):
-    num_graph = len(van_graph_list)
+import gc
+import time
+import platform
 
-    print("1 Degree Centrality")
+def main(van_graph_list, funct_list, num_segm=501):
+    # van_graph_list:
+    #   A list of NetworkX graphs. For each graph, the code extracts raw threshold
+    #   values (degree, centrality, curvature, weight, etc.) and builds filtered
+    #   versions of the graph needed for feature computation.
+    
+    # funct_list:
+    #   A list of strings indicating which filtration functions should be executed.
+    #   Only the functions whose names appear in this list will be computed.
+    #   Example entries: "degree", "deg_cen", "popularity", "closeness",
+    #   "forman ricci", "ollivier ricci", "weight".
+    
+    # num_segm:
+    #   Number of segments used to compress/reduce the raw threshold list into a
+    #   fixed number of evenly spaced thresholds (default: 501). This controls the
+    #   resolution of the filtration.
+    
+    # Additional behavior:
+    # - Ollivier–Ricci ("olricci") is skipped automatically on Windows systems,
+    #   because the required library does not run on Windows.
+    #
+    # - For each selected feature, the function measures runtime and prints it to
+    #   the console for monitoring performance.
+    #
+    # - compute_and_save_features returns two lists: sub-level and super-level
+    #   filtrations. These are stored in the final dictionary using keys in the
+    #   format "<feature>_sub" and "<feature>_super".
+    #
+    # - The function returns a dictionary collecting all computed results for every
+    #   requested feature.
 
-    graph_list_deg_cen, thresholds_deg_cen = get_thresholds_deg_cen(van_graph_list)
-    thresholds_deg_cen = reduce_thresholds(thresholds_deg_cen)
 
-    F_degcen = compute_and_save_features(
-        name,
-        "deg_cen",
-        num_graph,
-        graph_list_deg_cen,
-        thresholds_deg_cen,
-        sub_node_feat,
-        super_node_feat,
-        "degree_centrality",
-    )
+    results = {}
+    is_windows = platform.system().lower() == "windows"
 
-    return F_degcen
+    # Helper to measure runtime
+    def time_it(label, func):
+        start = time.time()
+        out = func()
+        end = time.time()
+        print(f"[Runtime] {label}: {end - start:.3f} sec")
+        return out
+
+    # ---- Degree Centrality ----
+    if "deg_cen" in funct_list:
+        def run_degcen():
+            graph_list, thresholds = get_thresholds_deg_cen(van_graph_list)
+            thresholds = reduce_thresholds(thresholds, num_segm)
+            F_sub, F_super = compute_and_save_features(
+                name, "deg_cen", num_graph, graph_list, thresholds,
+                sub_node_feat, super_node_feat, "degree_centrality"
+            )
+            return {"deg_cen_sub": F_sub, "deg_cen_super": F_super}
+
+        results.update(time_it("Degree Centrality", run_degcen))
+        gc.collect()
+
+    # ---- Popularity ----
+    if "popularity" in funct_list:
+        def run_popularity():
+            graph_list, thresholds = get_thresholds_popularity(van_graph_list)
+            thresholds = reduce_thresholds(thresholds, num_segm)
+            F_sub, F_super = compute_and_save_features(
+                name, "popularity", num_graph, graph_list, thresholds,
+                sub_node_feat, super_node_feat, "popularity"
+            )
+            return {"popularity_sub": F_sub, "popularity_super": F_super}
+
+        results.update(time_it("Popularity", run_popularity))
+        gc.collect()
+
+    # ---- Closeness ----
+    if "closeness" in funct_list:
+        def run_closeness():
+            graph_list, thresholds = get_thresholds_closeness(van_graph_list)
+            thresholds = reduce_thresholds(thresholds, num_segm)
+            F_sub, F_super = compute_and_save_features(
+                name, "closeness", num_graph, graph_list, thresholds,
+                sub_node_feat, super_node_feat, "closeness"
+            )
+            return {"closeness_sub": F_sub, "closeness_super": F_super}
+
+        results.update(time_it("Closeness", run_closeness))
+        gc.collect()
+
+    # ---- Forman–Ricci ----
+    if "forricci" in funct_list:
+        def run_forricci():
+            graph_list, thresholds = get_thresholds_forricci(van_graph_list)
+            thresholds = reduce_thresholds(thresholds, num_segm)
+            F_sub, F_super = compute_and_save_features(
+                name, "forricci", num_graph, graph_list, thresholds,
+                sub_edge_feat, super_edge_feat, "formanCurvature"
+            )
+            return {"forricci_sub": F_sub, "forricci_super": F_super}
+
+        results.update(time_it("Forman–Ricci", run_forricci))
+        gc.collect()
+
+    # ---- Ollivier–Ricci ----
+    if "olricci" in funct_list:
+        if is_windows:
+            print("[Skip] Ollivier–Ricci is not supported on Windows.")
+        else:
+            def run_olricci():
+                graph_list, thresholds = get_thresholds_olricci(van_graph_list)
+                thresholds = reduce_thresholds(thresholds, num_segm)
+                F_sub, F_super = compute_and_save_features(
+                    name, "olricci", num_graph, graph_list, thresholds,
+                    sub_edge_feat, super_edge_feat, "ricciCurvature"
+                )
+                return {"olricci_sub": F_sub, "olricci_super": F_super}
+
+            results.update(time_it("Ollivier–Ricci", run_olricci))
+            gc.collect()
+
+    # ---- Degree ----
+    if "degree" in funct_list:
+        def run_degree():
+            graph_list, thresholds = get_thresholds_degree(van_graph_list)
+            thresholds = reduce_thresholds(thresholds, num_segm)
+            F_sub, F_super = compute_and_save_features(
+                name, "degree", num_graph, graph_list, thresholds,
+                sub_node_feat, super_node_feat, "degree"
+            )
+            return {"degree_sub": F_sub, "degree_super": F_super}
+
+        results.update(time_it("Degree", run_degree))
+        gc.collect()
+
+    # ---- Weight ----
+    if "weight" in funct_list:
+        def run_weight():
+            graph_list, thresholds = get_thresholds_weight(van_graph_list)
+            thresholds = reduce_thresholds(thresholds, num_segm)
+            F_sub, F_super = compute_and_save_features(
+                name, "weight", num_graph, graph_list, thresholds,
+                sub_node_feat, super_node_feat, "weight"
+            )
+            return {"weight_sub": F_sub, "weight_super": F_super}
+
+        results.update(time_it("Weight", run_weight))
+        gc.collect()
+
+    return results
