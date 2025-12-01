@@ -1,4 +1,5 @@
-from threshold_extraction import *
+from .threshold_extraction import *
+from .utils import *
 
 def sub_node_feat(num_graph, G_list, threshold_array, metric_key):
     """
