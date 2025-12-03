@@ -162,6 +162,67 @@ F = toper.main(van_graph_list, ['deg_cen'], num_segm=501)
 ```
 
 
+# Using Built-in and Custom Filtration Functions in TopER
+
+TopER provides **seven built-in filtration functions**:
+
+- `"degree"`: Node degree  
+- `"deg_cen"`: Degree centrality  
+- `"popularity"`: Popularity measure (average degree of neighbors)  
+- `"closeness"`: Closeness centrality  
+- `"fricci"`: Forman-Ricci curvature  
+- `"oricci"`: Ollivier-Ricci curvature  
+- `"weight"`: Node weights (from dataset or custom filtration function)  
+
+---
+
+## Multiple Filtration Functions
+
+You can call **as many filtration functions as you want** in a single run. For example:
+
+```python
+F = toper.main(van_graph_list, ['deg_cen', 'degree', 'weight'], num_segm=501)
+```
+
+This will compute TopER embeddings for all three filtration functions.
+
+## Example: Using a Non-Built-in Filtration Function (HKS)
+
+The example below shows how to use **Heat Kernel Signature (HKS)** as a custom filtration function.  
+We assume you already have `van_graph_list` (a list of NetworkX graphs).
+
+```python
+# Assume you already have van_graph_list
+graph_list = []
+for G in van_graph_list:
+    # Compute HKS for each node (example with time parameter t=0.1)
+    hks = toper.compute_hks(G, [0.1])
+    
+    # Assign HKS values as node attribute "weight"
+    nx.set_node_attributes(G, hks, "weight")
+    
+    graph_list.append(G)
+
+# Run TopER using the custom filtration function "weight"
+F = toper.main(graph_list, ['weight'], num_segm=501)
+```
+
+## Future Improvements and Contact
+
+We are committed to improving **TopER**. In addition to the functions mentioned above that will be added in **TopER v2.0**, we plan to introduce:
+
+- **Dataset Visualization**: Visualize graphs and embeddings directly from the package.
+- **Filtration Function Retrieval**:
+  - Node-wise and edge-wise filtration values.
+  - Ability to compute multiple non build-in filtration functions.
+- **Custom Filtration Support**: Compute as many non-built-in functions as you want, seamlessly integrated into the pipeline.
+
+If you have **suggestions or questions**, please contact us at:  
+📧 **astrittola@gmail.com**
+
+---
+
+
 
 
 
